@@ -4,9 +4,11 @@ import { sequelize } from "../config/dbConfig";
 export const User = sequelize.define(
   "user",
   {
-    Id: {
+    id: {
       type: DataTypes.UUIDV4,
-      autoIncrement: true,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -27,5 +29,5 @@ export const User = sequelize.define(
       allowNull: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true, freezeTableName: true, tableName: "user", paranoid: true }
 );
