@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { sequelize } from "./config/dbConfig";
 import server from "../server";
+import { run } from "./services/kafkaConsumer";
 
 dotenv.config();
 sequelize
@@ -18,3 +19,5 @@ sequelize
   .catch((err) => {
     console.log(err);
   });
+
+run().catch((err) => console.log(err));
