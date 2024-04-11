@@ -102,6 +102,21 @@ class UserService {
       return result;
     } catch (e) {}
   }
+
+  async getInfoUser(authorization) {
+    let result;
+    const token = authorization.slice(7, authorization.length);
+    await jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
+      result = await User.findOne({
+        where: {
+          id: decoded.id,
+        },
+        attributes: ["id", "name", "nik", "email"],
+      });
+    });
+
+    return result;
+  }
 }
 
 module.exports = UserService;

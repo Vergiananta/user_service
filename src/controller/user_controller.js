@@ -7,7 +7,6 @@ const createUser = async (req, res, service) => {
 };
 
 const findAllEmployees = async (req, res, service) => {
-  console.log("masuk");
   const role = req.query.role;
   let findAllEmployees = await service.getAllEmployee(role);
   res.send(findAllEmployees);
@@ -21,7 +20,6 @@ const getEmployeeByID = async (req, res, service) => {
 
 const createAbsenceIn = async (req, res, service) => {
   const body = req.body;
-  console.log("the body: ", body);
   let createAbsenceIn = await service.createInAbsent(body);
 
   res.send(createAbsenceIn);
@@ -39,6 +37,12 @@ const loginUser = async (req, res, service) => {
   let loginUser = await service.loginUser(body);
   res.send(loginUser);
 };
+
+const getInfoUser = async (req, res, service) => {
+  const { authorization } = req.headers;
+  let infoUser = await service.getInfoUser(authorization);
+  res.send(infoUser);
+};
 module.exports = {
   createUser,
   findAllEmployees,
@@ -46,4 +50,5 @@ module.exports = {
   createAbsenceIn,
   createAbsenceOut,
   loginUser,
+  getInfoUser,
 };
