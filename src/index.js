@@ -1,23 +1,20 @@
-import dotenv from "dotenv";
-import { sequelize } from "./config/dbConfig";
-import server from "../server";
-import { run } from "./services/kafkaConsumer";
+const dotenv = require("dotenv");
+const sequelize = require("./config/dbConfig");
+const server = require("../server");
 
 dotenv.config();
-sequelize
-  .authenticate()
-  .then(() => {
-    server.listen(process.env.APP_PORT, "0.0.0.0", function () {
-      if (server.listening) {
-        logEvent.emit(INFO, {
-          logTitle: "SERVER",
-          logMessage: `Server is listening on ${process.env.APP_PORT}`,
-        });
-      }
+async function main() {
+  await sequelize
+    .authenticate()
+    .then(() => {
+      sequelize.sync();
+      server.listen(3000, "0.0.0.0", function () {
+        if (server.listening) {
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-run().catch((err) => console.log(err));
+}
+main();

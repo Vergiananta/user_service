@@ -1,13 +1,12 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../config/dbConfig";
+const DataTypes = require("sequelize");
+const sequelize = require("../config/dbConfig");
 
-export const User = sequelize.define(
+const User = sequelize.define(
   "user",
   {
     id: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
       allowNull: true,
     },
     name: {
@@ -28,6 +27,11 @@ export const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    roleId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
-  { timestamps: true, freezeTableName: true, tableName: "user", paranoid: true }
+  { tableName: "user", timestamp: false }
 );
+module.exports = User;

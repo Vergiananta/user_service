@@ -1,25 +1,20 @@
-import express from "express";
-import cors from "cors";
-import http from "http";
-import router from "./src/routes";
-
+const express = require("express");
+const cors = require("cors");
+const http = require("http");
+const router = require("./src/routes");
+const appMiddleware = require("./src/middleware/app-middleware");
 const app = express();
 
 app.use(cors());
-app.use(
-  bodyParser.json({
-    type: "application/json",
-    limit: "50mb",
-    extended: true,
-  })
-);
+
+app.use(appMiddleware);
 app.use(router);
 const server = http.createServer(app);
 server.on("error", function (e) {
-  logEvent.emit("APP-ERROR", {
-    logTitle: "APP FAILED",
-    logMessage: e,
-  });
+  // logEvent.emit("APP-ERROR", {
+  //   logTitle: "APP FAILED",
+  //   logMessage: e,
+  // });
 });
 
-export default server;
+module.exports = server;
