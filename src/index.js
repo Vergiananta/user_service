@@ -8,7 +8,7 @@ async function main() {
     .authenticate()
     .then(() => {
       sequelize.sync();
-      server.listen(3000, "0.0.0.0", function () {
+      server.listen(3005, "0.0.0.0", function () {
         if (server.listening) {
         }
       });

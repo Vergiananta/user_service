@@ -1,4 +1,5 @@
 const uuid = require("uuid");
+const jwt = require("jsonwebtoken");
 const createUser = async (req, res, service) => {
   const input = req.body;
   input.id = uuid.v4();
@@ -19,17 +20,31 @@ const getEmployeeByID = async (req, res, service) => {
 };
 
 const createAbsenceIn = async (req, res, service) => {
-  const body = req.body;
-  let createAbsenceIn = await service.createInAbsent(body);
+  let request = {};
+  const { authorization } = req.headers;
+  if (authorization.startsWith("Bearer")) {
+    const token = authorization.slice(7, authorization.length);
+    await jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      request.userId = decoded.id;
+    });
+    let createAbsenceIn = await service.createInAbsent(request);
 
-  res.send(createAbsenceIn);
+    res.send(createAbsenceIn);
+  }
 };
 
 const createAbsenceOut = async (req, res, service) => {
-  const body = req.body;
-  let createAbsenceIn = await service.createOutAbsent(body);
+  let request = {};
+  const { authorization } = req.headers;
+  if (authorization.startsWith("Bearer")) {
+    const token = authorization.slice(7, authorization.length);
+    await jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      request.userId = decoded.id;
+    });
+    let createAbsenceIn = await service.createOutAbsent(request);
 
-  res.send(createAbsenceIn);
+    res.send(createAbsenceIn);
+  }
 };
 
 const loginUser = async (req, res, service) => {
