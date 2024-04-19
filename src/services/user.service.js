@@ -9,7 +9,6 @@ class UserService {
     try {
       await RedisService.produce("absence-produce-in", JSON.stringify(input));
     } catch (err) {
-      // const consumer = await RedisService.consumer("absence-consumer");
       console.error("error produce: ", err);
     }
   }
@@ -18,13 +17,18 @@ class UserService {
     try {
       await RedisService.produce("absence-produce-out", JSON.stringify(input));
     } catch (err) {
-      // const consumer = await RedisService.consumer("absence-consumer");
       console.error("error produce: ", err);
     }
   }
 
   async createUser(input) {
     const userData = input;
+    const role = await Role.findOne({
+      where: {
+        name: "STAFF",
+      },
+    });
+    userData.roleId = role.id;
     let result;
     try {
       userData.password = await bcrypt.hash(input.password, 10);
@@ -115,6 +119,40 @@ class UserService {
       });
     });
 
+    return result;
+  }
+
+  async getRoles() {
+    const role = await Role.findAll();
+    return role;
+  }
+
+  async updateUser(input) {
+    let result;
+    try {
+      result = await User.update(input, {
+        where: {
+          id: input.id,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+
+    return result;
+  }
+
+  async deleteUser(id) {
+    let result;
+    try {
+      result = await User.destroy({
+        where: {
+          id: id,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
     return result;
   }
 }

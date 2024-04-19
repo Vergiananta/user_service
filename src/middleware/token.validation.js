@@ -10,7 +10,7 @@ const tokenValidation = (req, res, next, role) => {
           res.sendStatus(401);
         } else {
           const decodedToken = decoded;
-          if (role == decodedToken.role || role == "ADMIN") {
+          if (role == decodedToken.role || decodedToken.role == "ADMIN") {
             if (Date.now() >= decodedToken.exp * 1000) {
               res.sendStatus(401);
             } else {

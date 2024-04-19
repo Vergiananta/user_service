@@ -14,7 +14,7 @@ const findAllEmployees = async (req, res, service) => {
 };
 
 const getEmployeeByID = async (req, res, service) => {
-  const id = req.param.id;
+  const id = req.params.id;
   let findEmployee = await service.getEmployee(id);
   res.send(findEmployee);
 };
@@ -58,6 +58,22 @@ const getInfoUser = async (req, res, service) => {
   let infoUser = await service.getInfoUser(authorization);
   res.send(infoUser);
 };
+
+const findAllRole = async (req, res, service) => {
+  let roles = await service.getRoles();
+  res.send(roles);
+};
+
+const updateUser = async (req, res, service) => {
+  const body = req.body;
+  let updateUser = await service.updateUser(body);
+  res.send(updateUser);
+};
+
+const deleteUser = async (req, res, service) => {
+  const id = req.params.id;
+  await service.deleteUser(id);
+};
 module.exports = {
   createUser,
   findAllEmployees,
@@ -66,4 +82,7 @@ module.exports = {
   createAbsenceOut,
   loginUser,
   getInfoUser,
+  findAllRole,
+  updateUser,
+  deleteUser,
 };
